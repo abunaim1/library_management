@@ -21,23 +21,29 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="#">Deposite</a>
-              </li>                                
+                <a class="nav-link" href="{% url 'deposite' %}">Deposite</a>
+              </li>                                                               
               <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
-              </li>                                
-              <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
-              </li>                                
-              <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
-              </li>                                
-              <li class="nav-item">
-                <a class="nav-link" href="#">SignUp</a>
-              </li>                                
+                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+              </li>                                                              
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>  
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                  </li>                                
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'signup' %}">SignUp</a>
+                    </li>  
+                {% endif %}                              
             </ul>
           </div>
+          {% if user.is_authenticated %}
+            <h5>Current Balance: {{request.user.account.balance}}</h5>
+            {% endif %}
         </div>
       </nav>
     {% block content %}

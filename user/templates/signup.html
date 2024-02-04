@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+SignUp
+{% endblock %}
+{% block content %}
+{% for msg in messages %}
+<p class="badge bg-danger text-wrap">{{msg}}</p>
+{% endfor %}
+<form method="post" style="width: 50%; margin: auto;" class="pt-5">
+    <h1>{{type}} Here</h1>
+    {% csrf_token %}
+    <!-- {{form | crispy}} -->
+    {% for fm in form %}
+    {{fm.label_tag}}
+    {{fm}}
+    {{fm.errors}}
+    {% endfor %}
+    <input class="btn btn-warning mb-5 mt-2" type="submit" value="Submit">
+</form>
+{% endblock %}

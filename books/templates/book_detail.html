@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+Book Details
+{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-center align-items-center mt-5 gap-2" style="width: 80%; margin: auto;">
     <img src="{{book.image.url}}" alt="">
@@ -11,7 +14,9 @@
         {% endfor %}
         </div>
         <h5>{{book.price}}</h5>
-        <a class="btn btn-dark btn-sm" href="">Borrow</a>
+        {% if user.is_authenticated %}
+        <a class="btn btn-dark btn-sm" href="{% url 'borrow' book.id %}">Borrow</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

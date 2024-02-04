@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}
+User Borrow Report
+{% endblock %}
+{% block content %}
+{% for msg in messages %}
+<p class="badge bg-danger text-wrap">{{msg}}</p>
+{% endfor %}
+<table class="table table-striped">
+    <h3>Your Borrowed History till now:</h3>
+<thead>
+    <tr>
+      <th scope="col">BOOK ID</th>
+      <th scope="col">USER</th>
+      <th scope="col">BOOK TITLE</th>
+      <th scope="col">BORROW PRICE</th>
+      <th scope="col">Action</th>
+      <th scope="col">Feedback</th>
+    </tr>
+  </thead>
+{% for report in borrow_report %}
+      <tbody>
+          <tr>
+              <th scope="row">{{report.book_id}}</th>
+              <td>{{report.user}}</td>
+              <td>{{report.book_title}}</td>
+              <td>{{report.borrow_price}}</td>
+              <td><a class="btn btn-outline-dark btn-sm" href="{% url 'return' report.book_id %}">Return</a></td>
+              <td><a class="btn btn-outline-dark btn-sm" href="{% url 'review' report.book_id %}"> Review <a><td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+{% endblock %}
