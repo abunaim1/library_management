@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="width: 70%; margin: auto; margin-top: 20px; ">
+<div style="margin-left: 140px; margin-bottom: 20px;">
+    {% for cat in cat_data %}
+    <a class="btn btn-dark btn-sm" href="{% url 'cat_slug' cat.slug %}"><i>{{cat}}</i></a>
+    {% endfor %}
+</div>
+
+<div class="card-container d-flex flex-wrap gap-4" >
+    {% for book in books %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ book.image.url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h4 class="card-title">{{book.title}}</h4>
+            <p class="card-text">{{book.description | truncatewords:10}}</p>
+            <h5 class="card-text">{{book.price}}</h5>
+            <a href="{% url 'detail' book.id %}" class="btn btn-dark">পরে দেখুন</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</div>
+
+{% endblock %}
