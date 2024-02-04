@@ -131,5 +131,6 @@ def return_book(request, book_id):
     account.save(
         update_fields = ['balance']
     )
+    messages.success(request, f'Returned a book successfully! your balance also returned to your account')
     report.delete()
-    return redirect('home')
+    return redirect('profile')
