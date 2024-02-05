@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'library_management.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://mamarbank_0pof_user:wLoTqoQ0i4WLArBUDfj6b2DvChAruk3f@dpg-cmv0cduv3ddc73bpibjg-a.oregon-postgres.render.com/mamarbank_0pof',
+        default='postgres://database_2kuq_user:n9KIT2EqZIfKpyVPaRtTYKJdB2mdpBLw@dpg-cn02ekgcmk4c73aklg1g-a.oregon-postgres.render.com/database_2kuq',
     )
 }
 
