@@ -64,10 +64,10 @@ def deposite(request):
         user.save(
             update_fields = ['balance']
         )
-
         user_email(request.user, amount, 'Deposite Message', 'deposite_email.html')
+        return redirect('profile')
 
-    return render(request, 'profile.html', {'form':form, 'type':'Deposite'})
+    return render(request, 'deposite.html', {'form':form, 'type':'Deposite'})
 
 @login_required
 def borrow(request, book_id):
@@ -111,16 +111,20 @@ def profile(request):
 @login_required
 def review(request, book_id):
     book = BookModel.objects.get(id=book_id)
-    initial_data = {'user':request.user, 'book':book}
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-        form.save()
+    initial_data = {'user': request.user, 'book': book}
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
     else:
         form = ReviewForm(initial=initial_data)
-    review = Review.objects.filter(book=book)
-    form.fields['user'].widget.attrs['disabled'] = 'disabled'
-    form.fields['book'].widget.attrs['disabled'] = 'disabled'
-    return render(request, 'book_review.html', {'form':form, 'reviews':review, 'type': book.title})
+        form.fields['user'].widget.attrs['disabled'] = 'disabled'
+        form.fields['book'].widget.attrs['disabled'] = 'disabled'
+
+    reviews = Review.objects.filter(book=book)
+    return render(request, 'book_review.html', {'form': form, 'reviews': reviews, 'type': book.title})
+
 
 @login_required
 def return_book(request, book_id):
