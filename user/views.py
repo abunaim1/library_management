@@ -67,7 +67,7 @@ def deposite(request):
 
         user_email(request.user, amount, 'Deposite Message', 'deposite_email.html')
 
-    return render(request, 'deposite.html', {'form':form, 'type':'Deposite'})
+    return render(request, 'profile.html', {'form':form, 'type':'Deposite'})
 
 @login_required
 def borrow(request, book_id):
