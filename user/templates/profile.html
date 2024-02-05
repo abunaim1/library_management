@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 User Borrow Report
 {% endblock %}
@@ -7,9 +8,23 @@ User Borrow Report
 {% for msg in messages %}
 <p class="badge bg-danger text-wrap">{{msg}}</p>
 {% endfor %}
+<div class="d-flex align-items-center justify-content-center m-5">
+  <p class="display-3">YOUR PROFILE IS HERE</p>
+  <form method="post" class="w-75">
+    {% csrf_token %}
+    <!-- {{form | crispy}} -->
+    {% for fm in form %}
+    {{fm.label_tag}}
+    {{fm}}
+    {{fm.errors}}
+    {% endfor %}
+    <input class="btn btn-outline-dark mb-5 mt-2" type="submit" value="Update">
+  </form>
+</div>
+
 
 <table class="table table-striped">
-    <h3>Your Borrowed History till now:</h3>
+    <h4>Your Borrowed History till now:</h4>
 <thead>
     <tr>
       <th scope="col">BOOK ID</th>

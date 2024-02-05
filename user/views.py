@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
-from user.forms import AccountForm, DepositeForm, ReviewForm
+from user.forms import AccountForm, DepositeForm, ReviewForm, UserUpdateForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from books.models import BookModel
@@ -73,7 +73,7 @@ def deposite(request):
 def borrow(request, book_id):
     book = BookModel.objects.get(id=book_id)
     user = request.user.account
-    if user.balance > book.price:
+    if user.balance >= book.price:
         user.balance -= book.price
         user.save(
             update_fields = ['balance']
@@ -106,12 +106,22 @@ def borrow(request, book_id):
 @login_required
 def profile(request):
     borrow_report = BorrowModel.objects.filter(user=request.user)
-    return render(request, 'profile.html', {'user':request.user, 'borrow_report': borrow_report})
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+    else:        
+        form = UserUpdateForm(instance=request.user)
+    return render(request, 'profile.html', {'user':request.user, 'borrow_report': borrow_report, 'form':form})
 
 @login_required
 def review(request, book_id):
     book = BookModel.objects.get(id=book_id)
     initial_data = {'user': request.user, 'book': book}
+    form = ReviewForm(initial=initial_data)
+    form.fields['user'].widget.attrs['disabled'] = 'disabled'
+    form.fields['book'].widget.attrs['disabled'] = 'disabled'
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -119,8 +129,6 @@ def review(request, book_id):
             form.save()
     else:
         form = ReviewForm(initial=initial_data)
-        form.fields['user'].widget.attrs['disabled'] = 'disabled'
-        form.fields['book'].widget.attrs['disabled'] = 'disabled'
 
     reviews = Review.objects.filter(book=book)
     return render(request, 'book_review.html', {'form': form, 'reviews': reviews, 'type': book.title})
